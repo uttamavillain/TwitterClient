@@ -1,0 +1,12 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".Activity.SearchActivity">
+    <item
+        android:id="@+id/action_tweet"
+        android:orderInCategory="100"
+        android:title="@string/action_newTweet"
+        android:icon="@mipmap/composetweet"
+        app:showAsAction="always" />
+
+</menu>

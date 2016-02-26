@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Twitter Raj</string>
+    <string name="login_label">Connect with Twitter</string>
+    <string name="title_activity_time_line">Tweets</string>
+    <string name="action_newTweet">Tweet</string>
+
+</resources>
