@@ -1,4 +1,4 @@
-package com.codepath.apps.twitterraj.models;
+package com.codepath.vijay.twitterraj.models;
 
 import java.util.List;
 

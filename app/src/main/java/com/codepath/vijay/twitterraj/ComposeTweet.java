@@ -1,4 +1,4 @@
-package com.codepath.apps.twitterraj;
+package com.codepath.vijay.twitterraj;
 
 
 import android.os.Bundle;
@@ -12,7 +12,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
-import com.codepath.apps.twitterraj.models.User;
+import com.codepath.vijay.twitterraj.models.User;
 import com.squareup.picasso.Picasso;
 
 /**
@@ -83,5 +83,6 @@ public class ComposeTweet extends DialogFragment {
 
     interface TweetSender {
         public void sendTweet(String tweet);
+        public void postReply(String tweet, String id);
     }
 }

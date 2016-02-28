@@ -1,4 +1,4 @@
-package com.codepath.apps.twitterraj;
+package com.codepath.vijay.twitterraj;
 
 import android.content.Intent;
 import android.os.Bundle;

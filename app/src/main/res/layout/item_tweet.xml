@@ -57,4 +57,63 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 
+    <ImageView
+        android:layout_width="250dp"
+        android:layout_height="200dp"
+        android:id="@+id/ivMediaImage"
+        android:layout_below="@+id/tvBody"
+        android:layout_toRightOf="@+id/ivProfileImage"
+        android:layout_alignRight="@+id/tvRelativeTime"
+        android:layout_alignEnd="@+id/tvRelativeTime" />
+
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:id="@+id/ivLikes"
+        android:src="@drawable/like_default"
+        android:paddingTop="10dp"
+        android:layout_below="@+id/ivMediaImage"
+        android:layout_toLeftOf="@+id/tvLikes" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0"
+        android:id="@+id/tvLikes"
+        android:paddingTop="10dp"
+        android:layout_alignTop="@+id/tvRetweet"
+        android:layout_below="@+id/ivMediaImage"
+        android:layout_alignLeft="@+id/tvRelativeTime"
+        android:layout_alignStart="@+id/tvRelativeTime" />
+
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:id="@+id/ivRetweet"
+        android:paddingTop="10dp"
+        android:src="@drawable/retweet_default"
+        android:layout_below="@+id/ivMediaImage"
+        android:layout_toLeftOf="@+id/tvRetweet" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0"
+        android:id="@+id/tvRetweet"
+        android:paddingTop="10dp"
+        android:layout_marginRight="50dp"
+        android:layout_below="@+id/ivMediaImage"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/ivLikes" />
+
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:id="@+id/ivReplyTweet"
+        android:paddingTop="10dp"
+        android:layout_marginRight="50dp"
+        android:src="@drawable/reply_default"
+        android:layout_below="@+id/ivMediaImage"
+        android:layout_toLeftOf="@+id/ivRetweet" />
+
 </RelativeLayout>

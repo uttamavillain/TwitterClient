@@ -1,4 +1,4 @@
-package com.codepath.apps.twitterraj;
+package com.codepath.vijay.twitterraj;
 
 import android.content.Context;
 
@@ -51,6 +51,26 @@ public class TwitterClient extends OAuthBaseClient {
 	public void getCurrentUser(AsyncHttpResponseHandler handler) {
 		String apiUrl = getApiUrl("account/verify_credentials.json");
 		getClient().get(apiUrl, handler);
+	}
+
+	public void postLike(AsyncHttpResponseHandler handler, String id) {
+		String apiUrl = getApiUrl("favorites/create.json");
+		RequestParams params = new RequestParams();
+		params.put("id",id);
+		getClient().post(apiUrl, params, handler);
+	}
+
+	public void postRetweet(AsyncHttpResponseHandler handler, String id) {
+		String apiUrl = getApiUrl("statuses/retweet/"+id+".json");
+		getClient().post(apiUrl, handler);
+	}
+
+	public void postReply(AsyncHttpResponseHandler handler, String tweet, String id) {
+		String apiUrl = getApiUrl("statuses/update.json");
+		RequestParams params = new RequestParams();
+		params.put("status",tweet);
+		params.put("in_reply_to_status_id", id);
+		getClient().post(apiUrl, params, handler);
 	}
 
 	/* 1. Define the endpoint URL with getApiUrl and pass a relative path to the endpoint

@@ -1,4 +1,4 @@
-package com.codepath.apps.twitterraj;
+package com.codepath.vijay.twitterraj;
 
 /**
  * Created by uttamavillain on 2/24/16.

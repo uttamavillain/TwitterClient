@@ -1,5 +1,8 @@
-package com.codepath.apps.twitterraj;
+package com.codepath.vijay.twitterraj;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -11,8 +14,9 @@ import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.codepath.apps.twitterraj.models.Tweet;
-import com.codepath.apps.twitterraj.models.User;
+import com.activeandroid.ActiveAndroid;
+import com.codepath.vijay.twitterraj.models.Tweet;
+import com.codepath.vijay.twitterraj.models.User;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.apache.http.Header;
@@ -30,6 +34,7 @@ public class TimeLineActivity extends AppCompatActivity implements ComposeTweet.
     private ListView lvTweets;
     private SwipeRefreshLayout swipeContainer;
     private ComposeTweet composeTweet;
+    private ReplyTweet replyTweet;
     private User curUser;
 
     private long max_id;
@@ -39,14 +44,23 @@ public class TimeLineActivity extends AppCompatActivity implements ComposeTweet.
         super.onCreate(savedInstanceState);
         max_id = 0;
         setContentView(R.layout.activity_time_line);
+        ActiveAndroid.setLoggingEnabled(true);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setLogo(R.mipmap.twitter_icon);
         client = TwitterApplication.getRestClient();
         setupViews();
-        loadCurrentUserInfo();
-        populateTimeLine();
+        if(!isNetworkAvailable()){
+            Log.d(TAG, "Network not available, loading from persistant storage");
+            Toast.makeText(this, "Network not available, loading from persistant storage", Toast.LENGTH_SHORT).show();
+            mtweets.addAll(Tweet.getAll());
+            tweetsArrayAdapter.notifyDataSetChanged();
+        }
+        else {
+            loadCurrentUserInfo();
+            populateTimeLine();
+        }
     }
 
     private void setupViews() {
@@ -89,6 +103,8 @@ public class TimeLineActivity extends AppCompatActivity implements ComposeTweet.
     }
 
     public void refreshTimeLine() {
+        Tweet.deleteAll();
+        User.deleteAll();
         mtweets.clear();
         max_id = 0;
         populateTimeLine();
@@ -110,7 +126,7 @@ public class TimeLineActivity extends AppCompatActivity implements ComposeTweet.
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                Log.d(TAG, "onFailure while fetching timeline");
+                Log.d(TAG, "onFailure while fetching timeline " + throwable.toString());
                 swipeContainer.setRefreshing(false);
             }
         }, max_id);
@@ -146,7 +162,12 @@ public class TimeLineActivity extends AppCompatActivity implements ComposeTweet.
         composeTweet.show(fm, "compose_tweet");
     }
 
-    @Override
+    public void showReplyTweet(String replyTo, String id) {
+        FragmentManager fm = getSupportFragmentManager();
+        replyTweet = ReplyTweet.newInstance(curUser, replyTo, id);
+        replyTweet.show(fm, "reply_tweet");
+    }
+
     public void sendTweet(String tweet) {
         client.postTweet(new JsonHttpResponseHandler() {
             @Override
@@ -174,9 +195,61 @@ public class TimeLineActivity extends AppCompatActivity implements ComposeTweet.
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                Log.d(TAG, "Failed to get current user info "+throwable);
+                Log.d(TAG, "Failed to get current user info " + throwable);
                 Toast.makeText(getBaseContext(), "Failed to get current user info", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private Boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
+    }
+
+    public void postLike(String id) {
+        client.postLike(new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject jsonObject) {
+                Log.d(TAG, "Liked the tweet successfully");
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                Log.d(TAG, "Failed to like the tweet");
+            }
+        }, id);
+    }
+
+    public void postRetweet(String id) {
+        client.postRetweet(new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject jsonObject) {
+                Log.d(TAG, "Retweeted successfully");
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                Log.d(TAG, "Failed to Retweet");
+            }
+        }, id);
+    }
+
+    public void postReply(String tweet, String id) {
+        client.postReply(new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject jsonObject) {
+                Log.d(TAG, "onSuccess - Replied the tweet");
+                refreshTimeLine();
+                Toast.makeText(getBaseContext(), "Successfully Replied", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                Log.d(TAG, "Failed to reply");
+                Toast.makeText(getBaseContext(), "Failed to reply", Toast.LENGTH_SHORT).show();
+            }
+        }, tweet, id);
     }
 }
