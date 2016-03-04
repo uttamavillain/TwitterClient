@@ -29,6 +29,7 @@ public class ReplyTweet extends DialogFragment {
     private TextView tvReplyTweet;
     private String replyTo;
     private String id;
+    private ReplySenderListener mCallBack;
 
     public ReplyTweet() {
         // Empty constructor is required for DialogFragment
@@ -63,11 +64,17 @@ public class ReplyTweet extends DialogFragment {
         initListeners(view);
     }
 
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        mCallBack = (ReplySenderListener)getTargetFragment();
+    }
+
     private void initListeners(View view) {
         btTweet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((ComposeTweet.TweetSender)getActivity()).postReply(etTweet.getText().toString(), id);
+                mCallBack.postReply(etTweet.getText().toString(), id);
                 dismiss();
             }
         });
@@ -90,5 +97,9 @@ public class ReplyTweet extends DialogFragment {
         tvReplyTweet.setText("In reply to "+replyTo);
         etTweet.setText("@"+replyTo);
         Picasso.with(getContext()).load(curUser.getProfileImageUrl()).into(ivProfileImage);
+    }
+
+    public interface ReplySenderListener {
+        public void postReply(String tweet, String id);
     }
 }

@@ -28,6 +28,8 @@ import java.util.List;
  * Created by uttamavillain on 2/23/16.
  */
 public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
+    CallBackListener callBackListener;
+
 
     public TweetsArrayAdapter(Context context, List<Tweet> tweets) {
         super(context, android.R.layout.simple_list_item_1, tweets);
@@ -42,6 +44,13 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
         }
 
         ImageView ivProfileImage = (ImageView) convertView.findViewById(R.id.ivProfileImage);
+        ivProfileImage.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                callBackListener.showProfileActivity(tweet.getUser().getScreenName());
+            }
+        });
         TextView tvGivenName = (TextView) convertView.findViewById(R.id.tvGivenName);
         TextView tvBody = (TextView) convertView.findViewById(R.id.tvBody);
         TextView tvUserName = (TextView) convertView.findViewById(R.id.tvUserName);
@@ -57,7 +66,7 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
 
             @Override
             public void onClick(View v) {
-                ((TimeLineActivity) getContext()).showReplyTweet(tweet.getUser().getScreenName(), tweet.getUid()+"");
+                callBackListener.showReplyTweet(tweet.getUser().getScreenName(), tweet.getUid() + "");
             }
         });
 
@@ -81,7 +90,7 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
                 if(!tweet.isLiked()) {
                     tvLike.setText(Integer.toString(tweet.getLikes_count() + 1));
                     ivLikes.setImageResource(R.drawable.like_liked);
-                    ((TimeLineActivity) getContext()).postLike(tweet.getUid() + "");
+                    callBackListener.postLike(tweet.getUid() + "");
                     tweet.setLiked(true);
                     tweet.setLikes_count(tweet.getLikes_count() + 1);
                     tweet.save();
@@ -96,7 +105,7 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
                 if(!tweet.isRetweeted()) {
                     tvRetweet.setText(Integer.toString(tweet.getRetweet_count() + 1));
                     ivRetweet.setImageResource(R.drawable.retweet_retweeted);
-                    ((TimeLineActivity) getContext()).postRetweet(tweet.getUid() + "");
+                    callBackListener.postRetweet(tweet.getUid() + "");
                     tweet.setRetweeted(true);
                     tweet.setRetweet_count(tweet.getRetweet_count() + 1);
                     tweet.save();
@@ -170,5 +179,16 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
         canvas.drawBitmap(bmp1, new Matrix(), null);
         canvas.drawBitmap(bmp2, new Matrix(), null);
         return bmOverlay;
+    }
+
+    public interface CallBackListener {
+        public void showReplyTweet(String screenName, String uId);
+        public void postLike(String uId);
+        public void postRetweet(String uId);
+        public void showProfileActivity(String screenName);
+    }
+
+    public void setCallBackListener(CallBackListener callBackListener) {
+        this.callBackListener = callBackListener;
     }
 }

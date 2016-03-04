@@ -5,5 +5,7 @@
     <string name="login_label">Connect with Twitter</string>
     <string name="title_activity_time_line">Tweets</string>
     <string name="action_newTweet">Tweet</string>
+    <string name="title_activity_profile">ProfileActivity</string>
+    <string name="title_activity_test">test</string>
 
 </resources>

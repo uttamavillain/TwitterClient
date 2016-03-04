@@ -41,16 +41,18 @@ public class TwitterClient extends OAuthBaseClient {
 		getClient().get(apiUrl, params, handler);
 	}
 
+	public void getMentionTimeLine(AsyncHttpResponseHandler handler) {
+		String apiUrl = getApiUrl("statuses/mentions_timeline.json");
+		RequestParams params = new RequestParams();
+		params.put("count",25);
+		getClient().get(apiUrl, params, handler);
+	}
+
 	public void postTweet(AsyncHttpResponseHandler handler, String tweet) {
 		String apiUrl = getApiUrl("statuses/update.json");
 		RequestParams params = new RequestParams();
 		params.put("status",tweet);
 		getClient().post(apiUrl, params, handler);
-	}
-
-	public void getCurrentUser(AsyncHttpResponseHandler handler) {
-		String apiUrl = getApiUrl("account/verify_credentials.json");
-		getClient().get(apiUrl, handler);
 	}
 
 	public void postLike(AsyncHttpResponseHandler handler, String id) {
@@ -73,12 +75,32 @@ public class TwitterClient extends OAuthBaseClient {
 		getClient().post(apiUrl, params, handler);
 	}
 
-	/* 1. Define the endpoint URL with getApiUrl and pass a relative path to the endpoint
-	 * 	  i.e getApiUrl("statuses/home_timeline.json");
-	 * 2. Define the parameters to pass to the request (query or body)
-	 *    i.e RequestParams params = new RequestParams("foo", "bar");
-	 * 3. Define the request method and make a call to the client
-	 *    i.e client.get(apiUrl, params, handler);
-	 *    i.e client.post(apiUrl, params, handler);
-	 */
+	public void getUserInfo(AsyncHttpResponseHandler handler, String screenName) {
+		if(screenName == null) {
+			String apiUrl = getApiUrl("account/verify_credentials.json");
+			getClient().get(apiUrl, handler);
+		}
+		else {
+			String apiUrl = getApiUrl("users/show.json");
+			RequestParams params = new RequestParams();
+			params.put("screen_name", screenName);
+			getClient().get(apiUrl, params, handler);
+		}
+	}
+
+	public void getUserTimeLine(AsyncHttpResponseHandler handler, String screenName) {
+		String apiUrl = getApiUrl("statuses/user_timeline.json");
+		RequestParams params = new RequestParams();
+		params.put("count",25);
+		params.put("screen_name", screenName);
+		getClient().get(apiUrl, params, handler);
+	}
+
+	public void getSearch(AsyncHttpResponseHandler handler, String search) {
+		String apiUrl = getApiUrl("search/tweets.json");
+		RequestParams params = new RequestParams();
+		params.put("q",search);
+		params.put("count", 25);
+		getClient().get(apiUrl, params, handler);
+	}
 }

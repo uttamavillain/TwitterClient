@@ -25,6 +25,7 @@ public class ComposeTweet extends DialogFragment {
     private EditText tvTweet;
     private ImageView ivProfileImage;
     private User curUser;
+    private TweetSenderListener mCallBack;
 
     public ComposeTweet() {
         // Empty constructor is required for DialogFragment
@@ -48,6 +49,12 @@ public class ComposeTweet extends DialogFragment {
     }
 
     @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        mCallBack = (TweetSenderListener)getTargetFragment();
+    }
+
+    @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initVeiws(view);
@@ -59,7 +66,7 @@ public class ComposeTweet extends DialogFragment {
         btTweet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((TweetSender)getActivity()).sendTweet(tvTweet.getText().toString());
+                mCallBack.postTweet(tvTweet.getText().toString());
                 dismiss();
             }
         });
@@ -81,8 +88,7 @@ public class ComposeTweet extends DialogFragment {
         Picasso.with(getContext()).load(curUser.getProfileImageUrl()).into(ivProfileImage);
     }
 
-    interface TweetSender {
-        public void sendTweet(String tweet);
-        public void postReply(String tweet, String id);
+    public interface TweetSenderListener {
+        public void postTweet(String tweet);
     }
 }

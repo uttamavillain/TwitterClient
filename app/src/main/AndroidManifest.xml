@@ -12,6 +12,9 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
+    <android:uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <android:uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application
         android:name="com.activeandroid.app.Application"
         android:allowBackup="true"
@@ -48,15 +51,22 @@
         <activity
             android:name=".TimeLineActivity"
             android:label="@string/title_activity_time_line"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".VideoPlayerActivity"
+            android:configChanges="orientation|screenSize"
             android:label="VideoPlayer"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
-            android:configChanges="orientation|screenSize">
-        </activity>
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+        <activity
+            android:name=".ProfileActivity"
+            android:label="@string/title_activity_profile"
+            android:parentActivityName=".TimeLineActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".SearchActivity"
+            android:label="Search results"
+            android:parentActivityName=".TimeLineActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>
