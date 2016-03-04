@@ -18,6 +18,17 @@ The following **required** functionality is completed:
   * [X] User can then enter a new tweet and post this to twitter (2 points)
   * [X] User is taken back to home timeline with new tweet visible in timeline (1 point)
 
+* [X] User can switch between Timeline and Mention views using tabs. (4 points)
+  * [X] User can view their home timeline tweets.
+  * [X] User can view the recent mentions of their username.
+* [X] User can navigate to view their own profile (3 points)
+  * [X] User can see picture, tagline, # of followers, # of following, and tweets on their profile.
+* [X] User can click on the profile image in any tweet to see another user's profile. (4 points total)
+  * [X] User can see picture, tagline, # of followers, # of following, and tweets of clicked user. (1 point)
+  * [X] Profile view should include that user's timeline (1 point)
+  * [X] Optional: User can view following / followers list through the profile (2 points)
+* [X] User can infinitely paginate any of these timelines (home, mentions, user) by scrolling to the bottom (1 point)
+
 The following advanced user stories are optional:
 
 * [X] Advanced: While composing a tweet, user can see a character counter with characters remaining for tweet out of 140 (1 point)
@@ -37,6 +48,8 @@ The following advanced user stories are optional:
 * [] Bonus: Leverage RecyclerView as a replacement for the ListView and ArrayAdapter for all lists of tweets. (2 points)
 * [] Bonus: Move the "Compose" action to a FloatingActionButton instead of on the AppBar. (1 point)
 * [] Bonus: Replace Picasso with Glide for more efficient image rendering. (1 point)
+
+* [X] Advanced: User can search for tweets matching a particular query and see results (2 points)
 
 ## Video Walkthrough 
 
